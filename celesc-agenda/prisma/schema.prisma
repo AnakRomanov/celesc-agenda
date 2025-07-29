@@ -1,0 +1,32 @@
+
+model Agendamento {
+  id                        String   @id @default(uuid())
+  numeroNota                String
+  nomeSolicitante           String
+  localidade                Localidade
+  dataOriginal              DateTime
+  periodoOriginal           Periodo
+  dataAtual                 DateTime
+  periodoAtual              Periodo
+  status                    Status
+  reagendadoEm              DateTime?
+  quantidadeReagendamentos Int      @default(0)
+  criadoEm                  DateTime @default(now())
+  atualizadoEm              DateTime @updatedAt
+}
+
+enum Localidade {
+  CRICIUMA
+  ARARANGUA
+}
+
+enum Periodo {
+  MANHA
+  TARDE
+}
+
+enum Status {
+  AGENDADO
+  REAGENDADO
+  CONCLUIDO
+}
