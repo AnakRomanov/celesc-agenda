@@ -1,0 +1,4 @@
+// API route for reagendamento
+export default function handler(req, res) {
+  res.status(200).json({ message: 'Reagendamento realizado com sucesso' });
+}
