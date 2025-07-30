@@ -5,7 +5,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "vercel-build": "NODE_ENV=development npm install && npm run build"
+    "vercel-build": "npm install typescript @types/react @types/node --save-dev && npm run build"
   },
   "dependencies": {
     "next": "14.2.0",
@@ -14,9 +14,6 @@
     "@prisma/client": "^5.6.0"
   },
   "devDependencies": {
-    "prisma": "^5.6.0",
-    "typescript": "^5.0.0",
-    "@types/react": "^18.2.0",
-    "@types/node": "^20.0.0"
+    "prisma": "^5.6.0"
   }
 }
