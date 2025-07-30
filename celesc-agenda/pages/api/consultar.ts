@@ -1,4 +1,0 @@
-// API route for consulta
-export default function handler(req, res) {
-  res.status(200).json({ message: 'Consulta realizada com sucesso' });
-}
