@@ -1,17 +1,20 @@
 import React from 'react';
 
-type CalendarioProps = {
-  localidade: string;
-  onDataSelecionada: (data: Date) => void;
+export type CalendarioProps = {
+  onSelectDate: (date: string) => void;
 };
 
-export default function Calendario({ localidade, onDataSelecionada }: CalendarioProps) {
+const Calendario: React.FC<CalendarioProps> = ({ onSelectDate }) => {
+  const handleDateClick = () => {
+    const today = new Date().toISOString().split('T')[0];
+    onSelectDate(today);
+  };
+
   return (
     <div>
-      <p>Calendário para: {localidade}</p>
-      <button onClick={() => onDataSelecionada(new Date())}>
-        Selecionar hoje
-      </button>
+      <button onClick={handleDateClick}>Selecionar data de hoje</button>
     </div>
   );
-}
+};
+
+export default Calendario;
