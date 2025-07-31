@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import Calendario from './components/Calendario';
-
+import Calendario from '../components/Calendario';
 
 export default function Agendar() {
   const [localidade, setLocalidade] = useState('');
