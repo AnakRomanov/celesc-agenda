@@ -1,1 +1,1 @@
-module.exports = { reactStrictMode: true, output: 'standalone' }
+module.exports = { reactStrictMode: true };
