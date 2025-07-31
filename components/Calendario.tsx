@@ -1,9 +1,18 @@
 import React from 'react';
 
-export default function Calendario() {
+type CalendarioProps = {
+  localidade: string;
+  onDataSelecionada: (data: Date) => void;
+};
+
+export default function Calendario({ localidade, onDataSelecionada }: CalendarioProps) {
   return (
     <div>
-      <p>Calendário inteligente aqui</p>
+      <p>Calendário para: {localidade}</p>
+      {/* Aqui você pode colocar o calendário real */}
+      <button onClick={() => onDataSelecionada(new Date())}>
+        Selecionar hoje
+      </button>
     </div>
   );
 }
