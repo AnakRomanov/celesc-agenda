@@ -1,69 +1,80 @@
 
-import { useState } from 'react';
-import Calendario from '../components/Calendario';
+import { useState } from 'react'
+import axios from 'axios'
 
 export default function Agendar() {
-  const [dataSelecionada, setDataSelecionada] = useState<string | null>(null);
-  const [responsavel, setResponsavel] = useState('');
-  const [numeroInstalacao, setNumeroInstalacao] = useState('');
-  const [confirmacaoEmailSAP, setConfirmacaoEmailSAP] = useState(false);
+  const [responsavel, setResponsavel] = useState('')
+  const [numeroInstalacao, setNumeroInstalacao] = useState('')
+  const [dataSelecionada, setDataSelecionada] = useState('')
+  const [confirmacaoEmailSAP, setConfirmacaoEmailSAP] = useState(false)
+  const [mensagem, setMensagem] = useState('')
+  const [erro, setErro] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setMensagem('')
+    setErro('')
+
     if (!responsavel || !numeroInstalacao || !dataSelecionada || !confirmacaoEmailSAP) {
-      alert('Por favor, preencha todos os campos obrigatórios e confirme o checkbox.');
-      return;
+      setErro('Todos os campos são obrigatórios.')
+      return
     }
 
-    // Aqui você pode enviar os dados para a API
-    console.log({
-      responsavel,
-      numeroInstalacao,
-      dataSelecionada,
-      confirmacaoEmailSAP
-    });
-  };
+    try {
+      const response = await axios.post('/api/agendar', {
+        responsavel,
+        numeroInstalacao,
+        dataSelecionada,
+        confirmacaoEmailSAP
+      })
+      setMensagem(response.data.message)
+    } catch (error: any) {
+      setErro(error.response?.data?.error || 'Erro ao agendar.')
+    }
+  }
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Agendar Inspeção</h1>
+    <div style={{ maxWidth: 500, margin: '0 auto', padding: 20 }}>
+      <h1>Agendamento de Inspeção</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Responsável pelo agendamento *</label><br />
+        <label>Responsável:</label>
+        <input
+          type="text"
+          value={responsavel}
+          onChange={(e) => setResponsavel(e.target.value)}
+          required
+        />
+
+        <label>Número da Instalação:</label>
+        <input
+          type="text"
+          value={numeroInstalacao}
+          onChange={(e) => setNumeroInstalacao(e.target.value)}
+          required
+        />
+
+        <label>Data da Inspeção:</label>
+        <input
+          type="date"
+          value={dataSelecionada}
+          onChange={(e) => setDataSelecionada(e.target.value)}
+          required
+        />
+
+        <label>
           <input
-            type="text"
-            value={responsavel}
-            onChange={(e) => setResponsavel(e.target.value)}
-            required
+            type="checkbox"
+            checked={confirmacaoEmailSAP}
+            onChange={(e) => setConfirmacaoEmailSAP(e.target.checked)}
           />
-        </div>
-        <div>
-          <label>Número da instalação *</label><br />
-          <input
-            type="text"
-            value={numeroInstalacao}
-            onChange={(e) => setNumeroInstalacao(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Data da inspeção *</label><br />
-          <Calendario onSelectDate={setDataSelecionada} />
-          {dataSelecionada && <p>Data selecionada: {dataSelecionada}</p>}
-        </div>
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              checked={confirmacaoEmailSAP}
-              onChange={(e) => setConfirmacaoEmailSAP(e.target.checked)}
-              required
-            />
-            {' '}Confirmo que atualizei o e-mail do solicitante no SAP CRM, a confirmação do agendamento será enviada para esse endereço de e-mail *
-          </label>
-        </div>
+          Confirmo que atualizei o SAP CRM com o e-mail do cliente
+        </label>
+
         <button type="submit">Agendar</button>
       </form>
+
+      {mensagem && <p style={{ color: 'green' }}>{mensagem}</p>}
+      {erro && <p style={{ color: 'red' }}>{erro}</p>}
     </div>
-  );
+  )
 }
