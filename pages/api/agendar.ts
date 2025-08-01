@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const agendamentosNoDia = await prisma.agendamento.findMany({
     where: {
-      data: dataSelecionada,
+      data: data,
       numeroInstalacao: numeroInstalacao
     }
   })
@@ -40,7 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     data: {
       responsavel,
       numeroInstalacao,
-      data: dataSelecionada,
+      data: data,
       confirmacaoEmailSAP
     }
   })
